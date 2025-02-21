@@ -1,3 +1,7 @@
+"""
+This module sets up the asynchronous database engine and session factory using SQLAlchemy.
+It also provides a dependency for FastAPI routes to manage database sessions.
+"""
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
@@ -13,5 +17,11 @@ AsyncSessionLocal = sessionmaker(engine, expire_on_commit=False, class_=AsyncSes
 
 # Dependency for FastAPI routes
 async def get_db():
+    """
+    Provides a database session for FastAPI routes.
+    Ensures that the session is properly closed after use.
+    Yields:
+        AsyncSession: An asynchronous SQLAlchemy session.
+    """
     async with AsyncSessionLocal() as session:
         yield session
